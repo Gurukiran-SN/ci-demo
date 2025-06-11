@@ -1,0 +1,66 @@
+ Create a Simple Ansible Playbook
+Open Ubuntu:
+Open the Ubuntu terminal from the Start menu.
+Create a Directory for Ansible Files:
+mkdir ansible-demo  
+cd ansible-demo
+Create Inventory File:
+nano hosts.ini
+Paste the following content:
+[local]
+localhost ansible_connection=local
+Create Playbook (hello.yml):
+nano hello.yml
+Paste the following content:
+---
+- name: Test Ansible Playbook
+  hosts: local
+  tasks:
+    - name: Say Hello
+      debug:
+        msg: "Hello from Ansible!"
+Run the Playbook:
+ansible-playbook -i hosts.ini hello.yml
+Expected Output:
+TASK [Say Hello] ***
+ok: [localhost] => {
+    "msg": "Hello from Ansible!"
+}
+
+Step 3: Automate Apache Installation with Ansible
+Create Project Directory:
+mkdir ansible-lesson  
+cd ansible-lesson
+Create Inventory File (hosts.ini):
+nano hosts.ini
+Paste the following content:
+[local]
+localhost ansible_connection=local
+Create Playbook to Install Apache (apache.yml):
+nano apache.yml
+Paste the following content:
+---
+- name: Install and Start Apache Web Server
+  hosts: localhost
+  become: yes
+  become_method: sudo
+  become_user: root
+  tasks:
+    - name: Install Apache2
+      apt:
+        name: apache2
+        state: present
+        update_cache: yes
+    - name: Start Apache Service
+      service:
+        name: apache2
+        state: started
+        enabled: yes
+    - name: Print Success Message
+      debug:
+        msg: "Apache has been installed and started!"
+Run the Playbook:
+ansible-playbook -i hosts.ini apache.yml
+Verify Apache Installation:
+Open a browser and visit: http://localhost
+You should see the default Apache welcome page if the server is running correctly.
